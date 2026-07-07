@@ -1,12 +1,16 @@
 // Scheduled: re-poll every channel, update counts + rolling history.
 // "prev" is the count from ~24h ago so the board can show recent movement.
-// The history it stores is also your cheat-detector: a vertical jump = bought subs.
+// The stored history is also your cheat-detector: a vertical jump = bought subs.
+//
+// Iterates the strongly-consistent __index__ (not list(), which lags).
 
 import { getStore } from "@netlify/blobs";
 import { fetchSubscriberCount } from "./_youtube.mjs";
 
 const DAY = 24 * 60 * 60 * 1000;
 const MAX_HISTORY = 200;
+const INDEX = "__index__";
+const STRONG = { type: "json", consistency: "strong" };
 
 export default async () => {
   const roster = getStore("roster");
@@ -14,9 +18,9 @@ export default async () => {
   const now = Date.now();
   const nowIso = new Date(now).toISOString();
 
-  const { blobs } = await roster.list();
-  for (const b of blobs) {
-    const person = await roster.get(b.key, { type: "json" });
+  const index = (await roster.get(INDEX, STRONG)) || [];
+  for (const key of index) {
+    const person = await roster.get(key, { type: "json" });
     if (!person?.channelId) continue;
 
     let count;
@@ -27,7 +31,7 @@ export default async () => {
     }
     if (count == null) continue;
 
-    const rec = (await counts.get(b.key, { type: "json" })) || { history: [] };
+    const rec = (await counts.get(key, { type: "json" })) || { history: [] };
     const history = [...(rec.history || []), { t: nowIso, count }].slice(-MAX_HISTORY);
 
     // prev = the sample closest to 24h ago, for the "lately" delta
@@ -37,7 +41,7 @@ export default async () => {
       if (new Date(h.t).getTime() <= dayAgo) prev = h.count;
     }
 
-    await counts.setJSON(b.key, {
+    await counts.setJSON(key, {
       count,
       prev,
       startCount: rec.startCount ?? count,
