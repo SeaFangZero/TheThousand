@@ -383,8 +383,21 @@ html, body {
 
 /* ---------- Narrow screens ---------- */
 @media (max-width: 560px) {
-  .sheet { padding: 44px 20px 60px; }
-  .masthead-right { align-items: flex-start; }
+  .sheet { padding: 40px 20px 56px; }
+  .masthead { margin-bottom: 26px; gap: 16px; }
   .name { font-size: 17px; }
   .count .num { font-size: 21px; }
+  .count .goal { font-size: 12px; }
+  .row { padding: 20px 0 18px; }
+
+  /* dialog fits comfortably on a phone */
+  .scrim { padding: 16px; align-items: flex-start; padding-top: 12vh; }
+  .dialog { padding: 26px 22px 22px; }
+  .dialog h2 { font-size: 24px; }
+}
+
+@media (max-width: 380px) {
+  .wordmark { font-size: 34px; }
+  .name { font-size: 16px; }
+  .tag { font-size: 9px; padding: 3px 5px; }
 }
