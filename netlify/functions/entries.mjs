@@ -16,6 +16,7 @@ import { getStore } from "@netlify/blobs";
 import { resolveChannelId, fetchSubscriberCount } from "./_youtube.mjs";
 
 const JOIN_CODE = process.env.JOIN_CODE || "";
+const ADMIN_CODE = process.env.ADMIN_CODE || "";   // organizer-only; deletion is disabled until set
 const MAX_NAME = 24;
 const INDEX = "__index__";
 const STRONG = { type: "json", consistency: "strong" };
@@ -92,8 +93,10 @@ export default async (req) => {
     const code = String(payload.code || "").trim();
     const name = String(payload.name || "").trim();
 
-    if (!JOIN_CODE) return json(500, { error: "Registration is not configured yet." });
-    if (code !== JOIN_CODE) return json(403, { error: "That join code is not right." });
+    // Organizer-only. Disabled entirely until ADMIN_CODE is set, and never
+    // accepts the join code — so participants cannot remove each other.
+    if (!ADMIN_CODE) return json(403, { error: "Deletion is disabled." });
+    if (code !== ADMIN_CODE) return json(403, { error: "Wrong admin code." });
     if (!name) return json(400, { error: "A name is required." });
 
     const key = name.toLowerCase();
