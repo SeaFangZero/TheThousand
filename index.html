@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Thousand</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <main class="sheet">
+    <header class="masthead">
+      <div class="masthead-left">
+        <h1 class="wordmark">The Thousand</h1>
+      </div>
+      <div class="masthead-right">
+        <button class="btn-icon" id="themeToggle" type="button" aria-label="Toggle light and dark mode">
+          <span class="icon-sun" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+              <circle cx="12" cy="12" r="4.2"/>
+              <path d="M12 2.5v2.4M12 19.1v2.4M4.2 4.2l1.7 1.7M18.1 18.1l1.7 1.7M2.5 12h2.4M19.1 12h2.4M4.2 19.8l1.7-1.7M18.1 5.9l1.7-1.7"/>
+            </svg>
+          </span>
+          <span class="icon-moon" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round">
+              <path d="M20.5 13.4A8.3 8.3 0 1 1 10.6 3.5a6.5 6.5 0 0 0 9.9 9.9z"/>
+            </svg>
+          </span>
+        </button>
+        <button class="btn-add" id="openAdd" type="button">Add entry</button>
+      </div>
+    </header>
+
+    <div class="rule rule-heavy"></div>
+
+    <section class="board" id="board" aria-live="polite">
+      <!-- rows injected here -->
+    </section>
+  </main>
+
+  <!-- Add-entry dialog -->
+  <div class="scrim" id="scrim" hidden>
+    <div class="dialog" role="dialog" aria-modal="true" aria-labelledby="dlgTitle">
+      <h2 id="dlgTitle">Join the race</h2>
+      <p class="dialog-note">Your channel is never shown to anyone. We only display your name and your count.</p>
+      <form id="addForm" autocomplete="off">
+        <label>
+          <span>Join code</span>
+          <input name="code" type="text" required placeholder="the word the group shares" />
+        </label>
+        <label>
+          <span>Display name</span>
+          <input name="name" type="text" required maxlength="24" placeholder="how you appear on the board" />
+        </label>
+        <label>
+          <span>Channel ID or link</span>
+          <input name="channel" type="text" required placeholder="youtube.com/channel/UC… or a handle" />
+        </label>
+        <p class="form-msg" id="formMsg" hidden></p>
+        <div class="dialog-actions">
+          <button type="button" class="btn-ghost" id="cancelAdd">Cancel</button>
+          <button type="submit" class="btn-add" id="submitAdd">Enter</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="./app.js"></script>
+</body>
+</html>

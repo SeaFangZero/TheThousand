@@ -1,0 +1,6 @@
+.env
+node_modules/
+.netlify/
+
+# dev-only screenshot helper (needs puppeteer, not part of the site)
+shot.mjs

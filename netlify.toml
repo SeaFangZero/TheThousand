@@ -1,0 +1,10 @@
+# Static site at the repo root; functions in netlify/functions.
+[build]
+  publish = "."
+  functions = "netlify/functions"
+
+[functions]
+  node_bundler = "esbuild"
+
+# app.js calls /api/entries — the function declares that path itself via
+# `export const config = { path: "/api/entries" }`, so no redirect needed.
